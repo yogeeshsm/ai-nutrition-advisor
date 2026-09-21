@@ -14,7 +14,7 @@ try:
     TRANSLATOR_AVAILABLE = True
 except Exception as e:
     TRANSLATOR_AVAILABLE = False
-    print(f"⚠️ Translation service unavailable: {e}")
+    print(f"[WARNING] Translation service unavailable: {e}")
     Translator = None
 
 # Supported languages

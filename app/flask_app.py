@@ -9,7 +9,15 @@ from datetime import datetime
 import io
 import pandas as pd
 import os
-import sqlite3
+import sys
+
+# Setup Python module search paths
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_REPO_ROOT = os.path.dirname(_BASE_DIR)
+for _path in [_REPO_ROOT, _BASE_DIR, os.path.join(_REPO_ROOT, 'utils'), os.path.join(_REPO_ROOT, 'chatbots'), os.path.join(_REPO_ROOT, 'scripts'), os.path.join(_REPO_ROOT, 'app')]:
+    if os.path.exists(_path) and _path not in sys.path:
+        sys.path.insert(0, _path)
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -100,7 +108,9 @@ except Exception as e:
         PREDICTOR_ERROR = f"Main: {str(e)}, Fallback: {str(e2)}"
         MALNUTRITION_PREDICTOR = None
 
-app = Flask(__name__)
+template_dir = os.path.join(_REPO_ROOT, 'templates')
+static_dir = os.path.join(_REPO_ROOT, 'static')
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
 app.secret_key = os.environ.get('SECRET_KEY', 'nutrition-advisor-secret-key-2025')
 
 # Register Mandi Price API routes
